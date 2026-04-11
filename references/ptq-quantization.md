@@ -438,7 +438,7 @@ typedef struct {
 
 ### 5.1 PyTorch PTQ 量化代码
 
-**动态量化 (Dynamic PTQ)：**
+#### 5.1.1 动态量化 (Dynamic PTQ)
 
 ```python
 import torch
@@ -461,11 +461,12 @@ torch.quantization.convert(model, inplace=True)
 model.eval()
 ```
 
-**静态量化 (Static PTQ)：**
+#### 5.1.2 静态量化 (Static PTQ)
 
 ```python
 import torch
 import torch.nn as nn
+from torch.quantization import QuantStub, DequantStub
 
 # 定义量化配置
 qconfig = torch.quantization.QConfig(
@@ -478,21 +479,29 @@ class QLinear(nn.Module):
         super().__init__()
         self.weight = nn.Parameter(torch.randn(out_features, in_features))
         self.scale = nn.Parameter(torch.ones(1, out_features))
+        self.zero_point = nn.Parameter(torch.zeros(1, out_features, dtype=torch.int32))
         
     def forward(self, x):
         # 量化权重到 int8
         w_q = torch.quantize_per_tensor(
             self.weight, 
             self.scale, 
-            0, 
+            self.zero_point,
+            torch.qint8
+        )
+        # 也量化输入
+        x_q = torch.quantize_per_tensor(
+            x,
+            self.scale,
+            self.zero_point,
             torch.qint8
         )
         return torch.ops.quantized.linear(
-            x, w_q, self.scale, 0
+            x_q, w_q, self.scale, self.zero_point
         )
 ```
 
-**自定义 observer：**
+#### 5.1.3 自定义 Observer
 
 ```python
 import torch
@@ -514,47 +523,394 @@ class PercentileObserver(Observer):
         self.register_buffer('max_val', torch.tensor(val))
 ```
 
+#### 5.1.4 完整 PTQ 实现示例
+
+```python
+import torch
+import torch.nn as nn
+from typing import Dict, Tuple, List, Optional
+
+class PTQQuantizer:
+    """完整的 PTQ 量化器"""
+    
+    def __init__(self, model: nn.Module, bits: int = 8):
+        self.model = model
+        self.bits = bits
+        self.calibration_data: List[torch.Tensor] = []
+        self.qparams: Dict[str, Tuple[torch.Tensor, torch.Tensor]] = {}
+        self.activation_stats: Dict[str, Dict] = {}
+    
+    def collect_stats(self, data_loader, num_samples: int = 100):
+        """收集激活统计信息用于校准"""
+        self.model.eval()
+        self.activation_stats = {}
+        
+        with torch.no_grad():
+            for batch_idx, batch in enumerate(data_loader):
+                if batch_idx >= num_samples:
+                    break
+                    
+                if isinstance(batch, (list, tuple)):
+                    x = batch[0]
+                else:
+                    x = batch
+                    
+                # Hook 收集每层激活统计
+                self._register_hooks()
+                self.model(x)
+                
+        self._calculate_qparams()
+    
+    def _register_hooks(self):
+        """注册 hooks 收集激活统计"""
+        handles = []
+        
+        def hook_fn(name):
+            def hook(module, input, output):
+                if name not in self.activation_stats:
+                    self.activation_stats[name] = {
+                        'min': [],
+                        'max': []
+                    }
+                
+                # 获取输出激活
+                if isinstance(output, torch.Tensor):
+                    act = output.detach()
+                else:
+                    act = output[0].detach() if isinstance(output, (tuple, list)) else output
+                
+                self.activation_stats[name]['min'].append(act.min())
+                self.activation_stats[name]['max'].append(act.max())
+            
+            return hook
+        
+        # 注册所有可量化层
+        for name, module in self.model.named_modules():
+            if isinstance(module, (nn.Linear, nn.Conv2d)):
+                handle = module.register_forward_hook(hook_fn(name))
+                handles.append(handle)
+        
+        return handles
+    
+    def _calculate_qparams(self):
+        """从统计信息计算量化参数"""
+        for name, stats in self.activation_stats.items():
+            all_min = torch.stack(stats['min'])
+            all_max = torch.stack(stats['max'])
+            
+            x_min = all_min.min()
+            x_max = all_max.max()
+            
+            # 非对称量化参数
+            scale = (x_max - x_min) / (2 ** self.bits - 1)
+            zero_point = -round(x_min / scale)
+            zero_point = torch.clamp(zero_point, 0, 2 ** self.bits - 1)
+            
+            self.qparams[name] = (scale, zero_point)
+    
+    def apply_quantization(self):
+        """应用量化到模型"""
+        from torch.quantization import QuantStub, DequantStub
+        
+        for name, module in self.model.named_modules():
+            if isinstance(module, nn.Linear) and name in self.qparams:
+                scale, zero_point = self.qparams[name]
+                
+                # 替换为量化版本
+                qlinear = QuantizedLinear(
+                    module.in_features,
+                    module.out_features
+                )
+                qlinear.set_quant_params(scale, zero_point)
+                qlinear.weight.data = module.weight.data
+                if module.bias is not None:
+                    qlinear.bias.data = module.bias.data
+                    
+                # 替换原模块
+                parent = self._get_parent(name)
+                child_name = name.split('.')[-1]
+                setattr(parent, child_name, qlinear)
+    
+    def _get_parent(self, name: str):
+        """获取父模块"""
+        parts = name.split('.')
+        module = self.model
+        for part in parts[:-1]:
+            module = getattr(module, part)
+        return module
+
+
+class QuantizedLinear(nn.Module):
+    """量化版 Linear 层"""
+    
+    def __init__(self, in_features: int, out_features: int):
+        super().__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.weight = nn.Parameter(torch.empty(out_features, in_features))
+        self.bias = nn.Parameter(torch.empty(out_features))
+        self.scale = nn.Parameter(torch.ones(1, out_features))
+        self.zero_point = nn.Parameter(torch.zeros(1, out_features, dtype=torch.long))
+    
+    def set_quant_params(self, scale: torch.Tensor, zero_point: torch.Tensor):
+        """设置量化参数"""
+        self.scale.copy_(scale)
+        self.zero_point.copy_(zero_point)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # 量化输入
+        x_q = torch.quantize_per_tensor(
+            x, self.scale, self.zero_point, torch.qint8
+        )
+        # 量化矩阵乘法
+        return torch.ops.quantized.linear(
+            x_q, 
+            torch.quantize_per_tensor(self.weight, self.scale, self.zero_point, torch.qint8),
+            self.scale, self.zero_point
+        )
+```
+
+#### 5.1.5 使用示例
+
+```python
+# 创建模型
+model = MyModel().cuda().eval()
+
+# 创建量化器
+quantizer = PTQQuantizer(model, bits=8)
+
+
+# 收集校准数据 (需要真实的推理数据)
+calib_loader = DataLoader(calib_dataset, batch_size=32)
+quantizer.collect_stats(calib_loader, num_samples=100)
+
+# 应用量化
+quantizer.apply_quantization()
+
+# 测试量化后的模型
+model.eval()
+with torch.no_grad():
+    output = model(input_tensor.cuda())
+```
+
 ### 5.2 ONNX Runtime 量化
 
-**动态量化：**
+#### 5.2.1 动态量化
 
 ```python
 import onnx
 from onnxruntime.quantization import quantize_dynamic, QuantType
 
 # 动态 int8 量化
+# 权重在推理时动态量化，激活使用 FP16
 quantize_dynamic(
     input_model_path='model.onnx',
     output_model_path='model_dynamic_quant.onnx',
     weight_type=QuantType.QInt8,
     # 优化选项
-    op_types_to_quantize=['MatMul', 'Gemm', 'Add', 'Mul'],
-    reduce_range=True
+    op_types_to_quantize=['MatMul', 'Gemm', 'Add', 'Mul', 'Conv'],
+    reduce_range=True,  # 使用 reduced range (127 instead of 255)
+    optimize_model=True
 )
 ```
 
-**静态量化：**
+#### 5.2.2 静态量化
 
 ```python
-from onnxruntime.quantization import quantize_static, CalibrationDataReader, QuantType
+from onnxruntime.quantization import (
+    quantize_static, 
+    CalibrationDataReader, 
+    QuantType,
+    QuantFormat
+)
+import numpy as np
+from torch.utils.data import DataLoader
 
-# 准备校准数据
-def calib_data():
-    for data in calib_loader:
-        yield {'input': data.numpy()}
+class ONNXCalibDataReader(CalibrationDataReader):
+    """ONNX Runtime 校准数据读取器"""
+    
+    def __init__(self, data_loader, input_names):
+        self.data_loader = data_loader
+        self.input_names = input_names
+        self.iter = iter(data_loader)
+    
+    def get_next(self):
+        try:
+            batch = next(self.iter)
+            if isinstance(batch, (list, tuple)):
+                data = batch[0]
+            else:
+                data = batch
+            
+            # 转换为 numpy
+            if hasattr(data, 'numpy'):
+                data = data.numpy()
+            
+            # 构建输入字典
+            return {self.input_names[0]: data}
+        except StopIteration:
+            return None
 
 # 静态 int8 量化
-quantize_static(
-    input_model_path='model.onnx',
-    output_model_path='model_static_quant.onnx',
-    calibration_data_reader=calib_data(),
-    weight_type=QuantType.QInt8,
-    activation_type=QuantType.QInt8,
-    # 量化策略
-    quant_format=QuantFormat.QDQ,  # Quantize + Dequantize ops
-    per_channel=False,
-    reduce_range=False
+def quantize_onnx_model(
+    input_path: str,
+    output_path: str,
+    calib_data_loader: DataLoader,
+    input_name: str = 'input',
+    bits: int = 8
+):
+    """ONNX 模型静态量化"""
+    
+    calib_reader = ONNXCalibDataReader(calib_data_loader, [input_name])
+    
+    # 激活类型
+    activation_type = QuantType.QInt8 if bits == 8 else QuantType.QUInt8
+    
+    quantize_static(
+        input_model_path=input_path,
+        output_model_path=output_path,
+        calibration_data_reader=calib_reader,
+        weight_type=QuantType.QInt8,
+        activation_type=activation_type,
+        # QDQ 格式 (Quantize-Dequantize 操作符)
+        quant_format=QuantFormat.QDQ,
+        # Per-tensor 还是 Per-channel
+        per_channel=False,
+        # 减少范围
+        reduce_range=False,
+        # 校准方法
+        calibrate_method=1,  # 0=MinMax, 1=Entropy, 2=Percentile
+        # 节点白名单
+        nodes_to_quantize=['MatMul', 'Gemm', 'Conv', 'Add', 'Mul']
+    )
+    print(f"量化完成: {output_path}")
+```
+
+#### 5.2.3 自定义量化算子
+
+```python
+from onnx import numpy_patch, helper, TensorProto
+from onnxruntime.quantization import quantize_utils
+
+# 自定义量化 MatMul
+def quantized_matmul(
+    A, B, scale_a, scale_b, out_scale):
+    """量化矩阵乘法"""
+    # 解量化
+    A_fp = (A.astype(np.int32) - 128) * scale_a
+    B_fp = (B.astype(np.int32) - 128) * scale_b
+    
+    # 矩阵乘法
+    C_fp = np.matmul(A_fp, B_fp)
+    
+    # 重新量化
+    C_int = (C_fp / out_scale).round().astype(np.int32) + 128
+    return C_int
+
+# 创建自定义 ONNX 量化节点
+def make_quant_matmul_node(
+    A_name, B_name, output_name,
+    scale_a, scale_b, out_scale
+):
+    """创建量化 MatMul 节点"""
+    
+    # QuantizeLinear for A
+    quant_a = helper.make_node(
+        'QuantizeLinear',
+        inputs=[A_name, f'{A_name}_scale', f'{A_name}_zero'],
+        outputs=[f'{A_name}_quant'],
+        name=f'QuantizeLinear_{A_name}'
+    )
+    
+    # QuantizeLinear for B
+    quant_b = helper.make_node(
+        'QuantizeLinear',
+        inputs=[B_name, f'{B_name}_scale', f'{B_name}_zero'],
+        outputs=[f'{B_name}_quant'],
+        name=f'QuantizeLinear_{B_name}'
+    )
+    
+    # MatMul (使用量化后数据)
+    matmul = helper.make_node(
+        'MatMul',
+        inputs=[f'{A_name}_quant', f'{B_name}_quant'],
+        outputs=[f'{output_name}_quant'],
+        name=f'MatMul_{output_name}'
+    )
+    
+    # DequantizeLinear
+    dequant = helper.make_node(
+        'DequantizeLinear',
+        inputs=[f'{output_name}_quant', f'{output_name}_scale', f'{output_name}_zero'],
+        outputs=[output_name],
+        name=f'DequantizeLinear_{output_name}'
+    )
+    
+    return [quant_a, quant_b, matmul, dequant]
+```
+
+#### 5.2.4 使用示例
+
+```python
+import onnx
+
+# 1. 导出 PyTorch 模型到 ONNX
+def export_to_onnx(model, input_tensor, output_path):
+    model.eval()
+    with torch.no_grad():
+        torch.onnx.export(
+            model,
+            input_tensor,
+            output_path,
+            export_params=True,
+            opset_version=13,
+            input_names=['input'],
+            output_names=['output'],
+            dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}}
+        )
+    print(f"导出 ONNX 模型: {output_path}")
+
+# 2. 准备校准数据
+def create_calib_dataset(num_samples=100):
+    """创建校准数据集"""
+    calib_data = []
+    for _ in range(num_samples):
+        # 生成随机输入
+        x = np.random.randn(1, 784).astype(np.float32)
+        calib_data.append(x)
+    return calib_data
+
+# 3. 执行量化
+input_onnx = 'model.onnx'
+output_onnx = 'model_quant.onnx'
+
+calib_data = create_calib_dataset()
+calib_loader = [(x,) for x in calib_data]
+
+quantize_onnx_model(
+    input_path=input_onnx,
+    output_path=output_onnx,
+    calib_data_loader=calib_loader,
+    input_name='input',
+    bits=8
 )
+
+# 4. 验证量化模型
+import onnxruntime as ort
+
+sess_options = ort.SessionOptions()
+sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+
+session = ort.InferenceSession(
+    output_onnx,
+    sess_options,
+    providers=['CPUExecutionProvider']
+)
+
+# 运行推理
+input_data = np.random.randn(1, 784).astype(np.float32)
+output = session.run(None, {'input': input_data})
+print(f"量化模型推理成功, 输出形状: {output[0].shape}")
 ```
 
 **QDQ 格式：**
@@ -646,5 +1002,149 @@ model = AutoModelForCausalLM.from_pretrained(
 6. BitsAndBytes - https://github.com/TimDettmers/bitsandbytes
 
 ---
+
+## 附录 A：详细数学公式补充
+
+### A.1 量化公式的完整展开
+
+**前向量化 (Quantization):**
+
+```
+X_int = round(X_f / S) + Z
+```
+
+其中：
+- `S` = 缩放因子 (Scale)
+- `Z` = 零点 (Zero-point)
+- `round()` = 四舍五入到整数
+
+**反向反量化 (Dequantization):**
+
+```
+X_f = (X_int - Z) × S
+```
+
+**对称量化 (Z=0):**
+
+```
+# 量化
+X_int = round(X_f / S)
+X_f = X_int * S
+
+# Scale 计算
+S = max(|X_f|) / (2^(bits-1) - 1)
+```
+
+**非对称量化 (Z≠0):**
+
+```
+# 量化
+X_int = round(X_f / S) + Z
+
+# 反量化
+X_f = (X_int - Z) * S
+
+# 参数计算
+S = (max(X_f) - min(X_f)) / (2^bits - 1)
+Z = -round(min(X_f) / S)
+```
+
+
+### A.2 GPTQ 详细原理补充
+
+#### A.2.1 Hessian 矩阵近似
+
+GPTQ 使用 Fisher Information 作为 Hessian 的近似：
+
+```
+# 原始目标函数
+minimize: ||W - Q(W)||² × H
+
+# 其中 H 是 Hessian 矩阵
+H = ∇²L = X · Xᵀ  (输入激活的外积)
+
+# 对角近似 (简化计算)
+H_ii ≈ Σ(x_i²)
+# 即每个输入通道的累积能量
+```
+
+#### A.2.2 误差补偿数学推导
+
+```
+# 量化误差
+e = W_original - W_quantized
+
+# 补偿到后续列 (All-to-All)
+# 使用伪逆
+W_future = W_future + e · X_current⁻¹
+
+# 简化形式:
+# 对于列 i 的误差，分配到剩余列 j
+# ΔW_j = (eᵀ · x_i) / (x_iᵀ · x_i) × x_j
+```
+
+#### A.2.3 逐列量化算法
+
+```python
+def gptq_quantize_column(W_col, H_diag, bits):
+    """
+    单列 GPTQ 量化
+    
+    W_col: 权重列向量 [out_ch]
+    H_diag: Hessian 对角近似 [out_ch]
+    bits: 量化位数
+    """
+    # 1. 计算最优 scale
+    max_abs = W_col.abs().max()
+    scale = max_abs / (2**(bits-1) - 1)
+    
+    # 2. 基础量化
+    W_int = (W_col / scale).round().clamp(-127, 127)
+    
+    # 3. 基于 Hessian 的误差修正
+    error = W_col - W_int * scale
+    
+    # 4. 误差加权
+    weighted_error = error * H_diag
+    
+    return W_int * scale, weighted_error
+```
+
+
+### A.3 AWQ 详细原理补充
+
+#### A.3.1 Activation 权重重要性度量
+
+```
+# 输入通道重要性
+importance_in[i] = mean(|X[:, i]|)
+
+# 输出通道重要性
+importance_out[j] = mean(|W[j, :]|)
+
+
+# 组合重要性
+importance[i] = importance_in[i] × importance_out.mean()
+```
+
+
+#### A.3.2 权重缩放公式
+
+```
+# 计算缩放因子
+s_i = importance[i]^α  # α ∈ [0.5, 0.7]
+
+# 缩放权重
+W_scaled[i] = W[i] / s_i
+
+# 量化
+Q_scaled[i] = quantize(W_scaled[i])
+
+# 反量化 (恢复原始量程)
+Q[i] = Q_scaled[i] × s_i
+```
+
+---
+
 
 *End of Document*
