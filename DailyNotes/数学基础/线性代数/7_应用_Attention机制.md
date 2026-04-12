@@ -208,74 +208,28 @@ output = flash_attn_func(Q, K, V, causal=True)
 ### 完整Attention
 
 ```python
+# ▶ Attention 计算示例
 import torch
-import torch.nn as nn
+import torch.nn.functional as F
 import math
 
-def scaled_dot_product_attention(Q, K, V, mask=None):
-    """
-    Q: (batch, heads, seq_len, d_k)
-    K: (batch, heads, seq_len, d_k)
-    V: (batch, heads, seq_len, d_v)
-    mask: (batch, heads, seq_len, seq_len) or broadcastable
-    """
-    d_k = Q.shape[-1]
-    
-    # 1. 计算相似度
-    scores = torch.matmul(Q, K.transpose(-2, -1))  # (batch, heads, n, m)
-    
-    # 2. 缩放
-    scores = scores / math.sqrt(d_k)
-    
-    # 3. 掩码（可选）
-    if mask is not None:
-        scores = scores.masked_fill(mask == 0, float('-inf'))
-    
-    # 4. Softmax
-    attn_weights = F.softmax(scores, dim=-1)
-    
-    # 5. 加权求和
-    output = torch.matmul(attn_weights, V)  # (batch, heads, n, d_v)
-    
-    return output, attn_weights
+# Self-Attention (简化版)
+batch, seq_len, d_model = 2, 5, 64
+Q = K = V = torch.randn(batch, seq_len, d_model)
 
-class MultiHeadAttention(nn.Module):
-    def __init__(self, d_model, num_heads):
-        super().__init__()
-        self.h = num_heads
-        self.d_k = d_model // num_heads
-        self.d_v = d_model // num_heads
-        
-        self.W_Q = nn.Linear(d_model, self.h * self.d_k)
-        self.W_K = nn.Linear(d_model, self.h * self.d_k)
-        self.W_V = nn.Linear(d_model, self.h * self.d_v)
-        self.W_O = nn.Linear(self.h * self.d_v, d_model)
-    
-    def split_heads(self, x):
-        # (batch, seq, h*d) -> (batch, h, seq, d)
-        batch, seq, _ = x.shape
-        x = x.view(batch, seq, self.h, self.d_k)
-        return x.transpose(1, 2)
-    
-    def forward(self, Q, K, V, mask=None):
-        batch = Q.shape[0]
-        
-        # 线性投影 + 分头
-        Q = self.split_heads(self.W_Q(Q))  # (batch, h, n, d_k)
-        K = self.split_heads(self.W_K(K))
-        V = self.split_heads(self.W_V(V))
-        
-        # Scaled Dot-Product Attention
-        attn_output, _ = scaled_dot_product_attention(Q, K, V, mask)
-        
-        # 合并多头
-        attn_output = attn_output.transpose(1, 2).contiguous()
-        attn_output = attn_output.view(batch, -1, self.h * self.d_v)
-        
-        # 最终线性投影
-        output = self.W_O(attn_output)
-        
-        return output
+d_k = d_model
+# 1. 计算相似度
+scores = Q @ K.transpose(-2, -1)  # (batch, seq, seq)
+# 2. 缩放
+scores = scores / math.sqrt(d_k)
+# 3. Softmax
+attn_weights = F.softmax(scores, dim=-1)
+# 4. 加权求和
+output = attn_weights @ V
+
+print(f"Attention output shape: {output.shape}")  # (2, 5, 64)
+print(f"Attention weights shape: {attn_weights.shape}")  # (2, 5, 5)
+print(f"每行和为1: {attn_weights[0].sum(dim=-1)}")  # tensor([1., 1., 1., 1., 1.])
 ```
 
 ---
