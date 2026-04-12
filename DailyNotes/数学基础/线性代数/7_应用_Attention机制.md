@@ -280,6 +280,15 @@ class MultiHeadAttention(nn.Module):
 
 ---
 
+## 鸢尾花书对应章节
+
+鸢尾花书《矩阵力量》中与 Attention 相关的数学基础：
+- **Ch09 正交投影**：Attention score 的几何投影解释
+- **Ch17 多元函数微分**：Softmax 梯度的链式法则推导
+- **Ch19 直线到超平面**：Attention score 作为点积的度量几何
+
+---
+
 ## 数学性质
 
 ### Attention的表达能力
