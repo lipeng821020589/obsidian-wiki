@@ -66,8 +66,8 @@
 
 | 章节 | 主题 | 状态 |
 |------|------|------|
-| **Chap 8** | Transformers | 子agent处理中... |
-| **Chap 12** | 变分自编码器 (VAE) | 子agent处理中... |
+| **Chap 8** | Transformers | ✅ [[udlbook-chap8-transformers]] |
+| **Chap 12** | 变分自编码器 (VAE) | ✅ [[udlbook-chap12-vae]] |
 
 ### 📋 待整理
 
@@ -101,7 +101,7 @@
 | 卷积 CNN | *(待补充)* |
 | Transformers | [[transformer-paper-deep-read]] |
 | 扩散模型 | *(待补充)* |
-| VAE / 自编码器 | *(待补充)* |
+| VAE / 自编码器 | ✅ [[udlbook-chap12-vae]] |
 | 归一化流 | *(待补充)* |
 | GAN | *(待补充)* |
 
