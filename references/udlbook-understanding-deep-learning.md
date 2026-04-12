@@ -62,12 +62,12 @@
 | **Chap 4** | 神经网络 (Neural Networks) | [[udlbook-chap4-neural-networks]] |
 | **Chap 6** | 卷积神经网络 (ConvNets) | [[udlbook-chap6-convnets]] |
 
-### 🔄 处理中
+### ✅ 已完成（续）
 
-| 章节 | 主题 | 状态 |
-|------|------|------|
-| **Chap 8** | Transformers | ✅ [[udlbook-chap8-transformers]] |
-| **Chap 12** | 变分自编码器 (VAE) | ✅ [[udlbook-chap12-vae]] |
+| 章节 | 主题 | 笔记文件 |
+|------|------|----------|
+| **Chap 8** | Transformers（Notebook实际为Ch12） | [[udlbook-chap8-transformers]] |
+| **Chap 17** | VAE / 潜变量模型（Notebook实际为Ch17） | [[udlbook-chap12-vae]] |
 
 ### 📋 待整理
 
