@@ -1,5 +1,18 @@
 # Attention机制中的线性代数
 
+## 计算流程图
+
+```mermaid
+flowchart LR
+    Q[Query<br/>Query向量] --> S1[QK^T<br/>相似度计算]
+    K[Key<br/>Key向量] --> S1
+    S1 --> S2[÷√d_k<br/>缩放]
+    S2 --> S3[softmax<br/>归一化]
+    S3 --> S4[PV<br/>加权求和]
+    V[Value<br/>Value向量] --> S4
+    S4 --> O[Output<br/>输出]
+```
+
 ## Attention计算流程
 
 ### 标准Scaled Dot-Product Attention
@@ -95,6 +108,41 @@ O = torch.matmul(P, V)  # (batch, heads, n, d_v)
 - 输出是Value的加权平均
 
 ---
+
+## Multi-Head Attention 结构图
+
+```mermaid
+flowchart TB
+    subgraph "Multi-Head Attention"
+        X[Input X] --> WQ[WQ<br/>投影矩阵]
+        X --> WK[WK<br/>投影矩阵]
+        X --> WV[WV<br/>投影矩阵]
+        WQ --> Q1[Q<br/>head_1]
+        WQ --> Q2[Q<br/>head_2]
+        WQ --> Qh[Q<br/>head_h]
+        WK --> K1[K<br/>head_1]
+        WK --> K2[K<br/>head_2]
+        WK --> Kh[K<br/>head_h]
+        WV --> V1[V<br/>head_1]
+        WV --> V2[V<br/>head_2]
+        WV --> Vh[V<br/>head_h]
+        Q1 --> Attn1[Attention<br/>head_1]
+        K1 --> Attn1
+        V1 --> Attn1
+        Q2 --> Attn2[Attention<br/>head_2]
+        K2 --> Attn2
+        V2 --> Attn2
+        Qh --> Attnh[Attention<br/>head_h]
+        Kh --> Attnh
+        Vh --> Attnh
+        Attn1 --> Concat[Concat
+        拼接]
+        Attn2 --> Concat
+        Attnh --> Concat
+        Concat --> WO[WO<br/>输出投影]
+        WO --> Out[Output]
+    end
+```
 
 ## Multi-Head Attention
 
