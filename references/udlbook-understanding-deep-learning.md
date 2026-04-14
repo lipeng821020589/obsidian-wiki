@@ -58,36 +58,55 @@
 
 | 章节 | 主题 | 笔记文件 |
 |------|------|----------|
+| **Chap 1** | 背景数学 | [[udlbook-chap1-background-math]] |
+| **Chap 2** | 监督学习 | [[udlbook-chap2-supervised-learning]] |
 | **Chap 3** | 优化器 (Optimization) | [[udlbook-chap3-optimization]] |
 | **Chap 4** | 神经网络 (Neural Networks) | [[udlbook-chap4-neural-networks]] |
+| **Chap 5** | 线性神经网络 | [[udlbook-chap5-linear-networks]] |
 | **Chap 6** | 卷积神经网络 (ConvNets) | [[udlbook-chap6-convnets]] |
+| **Chap 7** | 反向传播 | [[udlbook-chap7-backpropagation]] |
+| **Chap 8** | Transformers | [[udlbook-chap8-transformers]] |
+| **Chap 9** | 正则化 | [[udlbook-chap9-regularization]] |
+| **Chap 10** | 卷积神经网络 | [[udlbook-chap10-convnets]] |
+| **Chap 11** | ResNets & BatchNorm | [[udlbook-chap11-resnets-batchnorm]] |
+| **Chap 12** | 变分自编码器 (VAE) | [[udlbook-chap12-vae]] |
+| **Chap 13** | 图神经网络 (GNN) | [[udlbook-chap13-gnn]] |
+| **Chap 14** | GAN | [[udlbook-chap14-gan]] |
+| **Chap 15** | 强化学习 (RL) | [[udlbook-chap15-rl]] |
+| **Chap 16** | 归一化流 | [[udlbook-chap16-normalizing-flows]] |
+| **Chap 17** | 潜变量模型 | [[udlbook-chap17-latent-variable]] |
+| **Chap 18** | 扩散模型 | [[udlbook-chap18-diffusion]] |
+| **Chap 19** | 扩散模型（续） | [[udlbook-chap19-diffusion-advanced]] |
+| **Chap 20** | 应用 | [[udlbook-chap20-applications]] |
+| **Chap 21** | 偏见缓解与可解释性 | [[udlbook-chap21-bias-explainability]] |
 
-### ✅ 已完成（续）
+### ⚠️ 章节编号说明
 
-| 章节 | 主题 | 笔记文件 |
-|------|------|----------|
-| **Chap 8** | Transformers（Notebook实际为Ch12） | [[udlbook-chap8-transformers]] |
-| **Chap 17** | VAE / 潜变量模型（Notebook实际为Ch17） | [[udlbook-chap12-vae]] |
+Notebook 文件编号与书籍章节编号不完全一致。本仓库笔记按以下映射整理：
 
-### 📋 待整理
-
-| 章节 | 主题 |
-|------|------|
-| Chap 1 | 深度学习基础 / 背景数学 |
-| Chap 2 | 监督学习 |
-| Chap 5 | 线性神经网络 |
-| Chap 7 | 残差网络 |
-| Chap 9 | 扩散模型 |
-| Chap 10 | 扩散模型（续） |
-| Chap 11 | 自编码器 |
-| Chap 13 | 归一化流 |
-| Chap 14 | GAN |
-| Chap 15 | 强化学习 |
-| Chap 16 | 蒸馏 |
-| Chap 17 | 对比学习 |
-| Chap 18 | 架构设计 |
-| Chap 19 | 训练技巧 |
-| Chap 20 | 应用 |
+| 书籍章节 | 主题 | Notebook 目录 |
+|---------|------|-------------|
+| Chap 1 | 背景数学 | Chap01 |
+| Chap 2 | 监督学习 | Chap02 |
+| Chap 3 | 优化器 | Chap06 |
+| Chap 4 | 神经网络 | Chap04 |
+| Chap 5 | 线性神经网络 | Chap05 |
+| Chap 6 | 卷积神经网络 | (分散于 Chap10, Chap11) |
+| Chap 7 | 反向传播 | Chap07 |
+| Chap 8 | Transformers | Chap12 |
+| Chap 9 | 正则化 | Chap09 |
+| Chap 10 | 卷积神经网络 | Chap10 |
+| Chap 11 | ResNets & BatchNorm | Chap11 |
+| Chap 12 | Transformers（续） | Chap12 |
+| Chap 13 | 图神经网络 | Chap13 |
+| Chap 14 | GAN | Chap15 |
+| Chap 15 | 强化学习 | Chap19 |
+| Chap 16 | 归一化流 | Chap16 |
+| Chap 17 | VAE/潜变量模型 | Chap17 |
+| Chap 18 | 扩散模型 | Chap18 |
+| Chap 19 | 扩散模型（续） | Chap18 |
+| Chap 20 | 应用 | Chap20 |
+| Chap 21 | 偏见缓解与可解释性 | Chap21 |
 
 ---
 
@@ -98,12 +117,16 @@
 | 监督学习 | [[7_应用_Attention机制]] |
 | 优化器 / 梯度下降 | [[4_梯度下降]] / [[6_应用_神经网络优化]] |
 | 神经网络 | [[5_自动微分]] |
-| 卷积 CNN | *(待补充)* |
-| Transformers | [[transformer-paper-deep-read]] |
-| 扩散模型 | *(待补充)* |
-| VAE / 自编码器 | ✅ [[udlbook-chap12-vae]] |
-| 归一化流 | *(待补充)* |
-| GAN | *(待补充)* |
+| 卷积 CNN | ✅ [[udlbook-chap10-convnets]] |
+| Transformers | ✅ [[udlbook-chap8-transformers]] |
+| 扩散模型 | ✅ [[udlbook-chap18-diffusion]] |
+| VAE / 自编码器 | ✅ [[udlbook-chap12-vae]] / [[udlbook-chap17-latent-variable]] |
+| 归一化流 | ✅ [[udlbook-chap16-normalizing-flows]] |
+| GAN | ✅ [[udlbook-chap14-gan]] |
+| 强化学习 | ✅ [[udlbook-chap15-rl]] |
+| 图神经网络 | ✅ [[udlbook-chap13-gnn]] |
+| 正则化 | ✅ [[udlbook-chap9-regularization]] |
+| 反向传播 | ✅ [[udlbook-chap7-backpropagation]] |
 
 ---
 
