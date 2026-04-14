@@ -16,8 +16,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap17/17_1_Latent_Variable_Models.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 17.1: Latent variable models**
 
 This notebook investigates a non-linear latent variable model similar to that in figures 17.2 and 17.3 of the book.
@@ -259,8 +257,6 @@ plt.show()
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap17/17_2_Reparameterization_Trick.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 17.2: Reparameterization trick**
 
@@ -546,8 +542,6 @@ The variance of the reparameterization estimator should be quite a bit lower tha
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap17/17_3_Importance_Sampling.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 17.3: Importance sampling**
 

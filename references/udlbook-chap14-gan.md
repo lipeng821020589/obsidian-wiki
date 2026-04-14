@@ -15,8 +15,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap15/15_1_GAN_Toy_Example.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 15.1: GAN Toy example**
 
 This notebook investigates the GAN toy example as illustrated in figure 15.1 in the book.
@@ -291,8 +289,6 @@ You can see that the synthesized data (orange) is becoming closer to the true da
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap15/15_2_Wasserstein_Distance.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 15.2: Wasserstein Distance**
 

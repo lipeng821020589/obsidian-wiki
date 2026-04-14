@@ -16,8 +16,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap05/5_1_Least_Squares_Loss.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 5.1: Least Squares Loss**
 
 This notebook investigates the least squares loss and the equivalence of maximum likelihood and minimum negative log likelihood.
@@ -421,8 +419,6 @@ Here we just varied one at a time as it is easier to see what is going on.  This
 ***
 
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap05/5_2_Binary_Cross_Entropy_Loss.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 5.2 Binary Cross-Entropy Loss**
 
 This notebook investigates the binary cross-entropy loss.  It follows from applying the formula in section 5.2 to a loss function based on the Bernoulli distribution.
@@ -711,8 +707,6 @@ Again, to fit the full neural model we would vary all of the 10 parameters of th
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap05/5_3_Multiclass_Cross_entropy_Loss.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 5.3 Multiclass Cross-Entropy Loss**
 

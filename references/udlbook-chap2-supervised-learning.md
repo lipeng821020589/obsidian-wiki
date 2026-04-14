@@ -14,8 +14,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap02/2_1_Supervised_Learning.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # Notebook 2.1 Supervised Learning
 
 The purpose of this notebook is to explore the linear regression model discussed in Chapter 2 of the book.

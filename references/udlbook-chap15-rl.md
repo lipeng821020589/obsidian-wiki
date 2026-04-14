@@ -18,8 +18,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap19/19_1_Markov_Decision_Processes.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 19.1: Markov Decision Processes**
 
 This notebook investigates Markov decision processes as described in section 19.1 of the book.
@@ -576,8 +574,6 @@ mdp_drawer.draw(layout, state = states[0], path1=states, policy = stochastic_pol
 ***
 
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap19/19_2_Dynamic_Programming.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 19.2: Dynamic programming**
 
 This notebook investigates the dynamic programming approach to tabular reinforcement learning as described in figure 19.10 of the book.
@@ -1001,8 +997,6 @@ You should see that if we start at state 13, the actions have been selected to g
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap19/19_3_Monte_Carlo_Methods.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 19.3: Monte-Carlo methods**
 
@@ -1591,8 +1585,6 @@ You can see a definite improvement to the policy
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap19/19_4_Temporal_Difference_Methods.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 19.4: Temporal difference methods**
 
@@ -2192,8 +2184,6 @@ visualize_one_episode(states, actions)
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap19/19_5_Control_Variates.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 19.5: Control variates**
 

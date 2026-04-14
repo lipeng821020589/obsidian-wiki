@@ -15,8 +15,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap21/21_1_Bias_Mitigation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 21.1: Bias mitigation**
 
 This notebook investigates a post-processing method for bias mitigation (see figure 21.2 in the book). It based on this [blog](https://www.borealisai.com/research-blogs/tutorial1-bias-and-fairness-ai/) that I wrote for Borealis AI in 2019, which itself was derived from [this blog](https://research.google.com/bigpicture/attacking-discrimination-in-ml/) by Wattenberg, Viégas, and Hardt.
@@ -259,8 +257,6 @@ The conclusion from all this is that (i) definitions of fairness are quite subtl
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap21/21_2_Explainability.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 21.2: Explainability**
 

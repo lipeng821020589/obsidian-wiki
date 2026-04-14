@@ -15,8 +15,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap18/18_1_Diffusion_Encoder.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 18.1: Diffusion Encoder**
 
 This notebook investigates the diffusion encoder as described in section 18.2 of the book.
@@ -322,8 +320,6 @@ draw_prob_dist(x_plot_vals, marginal_distributions[60,:],'$q(z_{60})$')
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap18/18_2_1D_Diffusion_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 18.2: 1D Diffusion Model**
 

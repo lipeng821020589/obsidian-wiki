@@ -18,8 +18,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap09/9_1_L2_Regularization.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 9.1: L2 Regularization**
 
 This notebook investigates adding L2 regularization to the loss function for the Gabor model as in figure 9.1.
@@ -390,8 +388,6 @@ You should see that the gradient descent algorithm now finds the correct minimum
 ***
 
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap09/9_2_Implicit_Regularization.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 9.2: Implicit Regularization**
 
 This notebook investigates how the finite step sizes in gradient descent cause the trajectory to deviate and how this can be explained by adding an implicit regularization term.  It recreates figure 9.3 from the book.
@@ -607,8 +603,6 @@ Now the two trajectories align.  The red curve runs gradient descent with a typi
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap09/9_3_Ensembling.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 9.3: Ensembling**
 
@@ -841,8 +835,6 @@ You should see that both the median and mean models are better than any of the i
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap09/9_4_Bayesian_Approach.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 9.4: Bayesian approach**
 
@@ -1138,8 +1130,6 @@ TODO:
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap09/9_5_Augmentation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 9.5: Augmentation**
 

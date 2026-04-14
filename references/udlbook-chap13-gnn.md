@@ -17,8 +17,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap13/13_1_Graph_Representation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 13.1: Graph representation**
 
 This notebook investigates representing graphs with matrices as illustrated in figure 13.4 from the book.
@@ -107,8 +105,6 @@ print(np.zeros_like(x))
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap13/13_2_Graph_Classification.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 13.2: Graph classification**
 
@@ -258,8 +254,6 @@ Propanol structure can be found [here](https://upload.wikimedia.org/wikipedia/co
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap13/13_3_Neighborhood_Sampling.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 13.3: Neighborhood sampling**
 
@@ -452,8 +446,6 @@ If you did this correctly, there should be 9 yellow nodes in the figure.  The "r
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap13/13_4_Graph_Attention_Networks.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 13.4: Graph attention networks**
 

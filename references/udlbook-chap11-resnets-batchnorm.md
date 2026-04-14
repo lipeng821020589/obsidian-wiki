@@ -16,8 +16,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap11/11_1_Shattered_Gradients.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 11.1: Shattered gradients**
 
 This notebook investigates the phenomenon of shattered gradients as discussed in section 11.1.1.  It replicates some of the experiments in [Balduzzi et al. (2017)](https://arxiv.org/abs/1702.08591).
@@ -280,8 +278,6 @@ plot_autocorr(K,D)
 ***
 
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap11/11_2_Residual_Networks.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 11.2: Residual Networks**
 
 This notebook adapts the networks for MNIST1D to use residual connections.
@@ -469,8 +465,6 @@ TODO: Try running this network with and without the residual connections.  Does 
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap11/11_3_Batch_Normalization.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 11.3: Batch normalization**
 

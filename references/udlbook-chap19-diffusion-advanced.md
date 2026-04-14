@@ -15,8 +15,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap18/18_3_Reparameterized_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 18.3: 1D Reparameterized model**
 
 This notebook investigates the reparameterized model as described in section 18.5 of the book and implements algorithms 18.1 and 18.2.
@@ -246,8 +244,6 @@ Notice that the samples have a tendency to move from positions that are near the
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap18/18_4_Families_of_Diffusion_Models.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 18.4: Families of diffusion models**
 

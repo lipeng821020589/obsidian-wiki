@@ -17,8 +17,6 @@
 
 ## 内容
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap20/20_1_Random_Data.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 20.1: Random Data**
 
 This notebook investigates training the network with random data, as illustrated in figure 20.1.
@@ -222,8 +220,6 @@ plt.show()
 ***
 
 
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap20/20_2_Full_Batch_Gradient_Descent.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 # **Notebook 20.2: Full Batch Gradient Descent**
 
 This notebook investigates training a network with full batch gradient descent as in figure 20.2.  There is also a version (notebook takes a long time to run), but this didn't speed it up much for me.  If you run out of CoLab time,  you'll need to download the Python file and run locally.
@@ -408,8 +404,6 @@ plt.show()
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap20/20_3_Lottery_Tickets.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 20.3: Lottery tickets**
 
@@ -663,8 +657,6 @@ This phenomenon is explored much further in the original notebook by Sam Greydan
 
 ***
 
-
-<a href="https://colab.research.google.com/github/udlbook/udlbook/blob/main/Notebooks/Chap20/20_4_Adversarial_Attacks.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # **Notebook 20.4: Adversarial attacks**
 
