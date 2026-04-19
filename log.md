@@ -1,7 +1,6 @@
----
-title: Wiki Log
----
+# Log
 
-# Wiki Log
+## 2026
 
-- [2026-04-08] INIT vault_path="/Work/Obsidian" categories=concepts,entities,skills,references,synthesis,journal
+- [2026-04-19T10:30:00Z] INGEST source="conversation-2026-04-19" pages_updated=0 pages_created=5 mode=full notes="Transformer/Attention series: transformer-architecture, multi-head-attention, agentic-rl, flashattention, attention-is-all-you-need"
+- [2026-04-19T10:55:00Z] GIT_SYNC source="Obsidian vault" reason="knowledge sync"
