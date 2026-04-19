@@ -2,9 +2,9 @@
   "version": 1,
   "vault_path": "/Work/Obsidian",
   "stats": {
-    "total_sources_ingested": 1,
-    "total_pages": 5,
-    "last_ingest": "2026-04-19T10:30:00Z"
+    "total_sources_ingested": 2,
+    "total_pages": 6,
+    "last_ingest": "2026-04-19T11:10:00Z"
   },
   "sources": {
     "conversation-2026-04-19": {
@@ -21,6 +21,19 @@
         "references/attention-is-all-you-need.md"
       ],
       "pages_updated": []
+    },
+    "conversation-2026-04-19-ffn": {
+      "ingested_at": "2026-04-19T11:10:00Z",
+      "size_bytes": 0,
+      "modified_at": "2026-04-19T11:10:00Z",
+      "source_type": "conversation",
+      "project": null,
+      "pages_created": [
+        "concepts/feed-forward-network.md"
+      ],
+      "pages_updated": [
+        "index.md"
+      ]
     }
   }
 }

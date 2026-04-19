@@ -12,6 +12,7 @@ title: Wiki Index
 - [[multi-head-attention]] — 8头并行各学不同依赖，参数量与单头等价 (#ml #attention)
 - [[agentic-rl]] — 通过RL训练AI Agent自主规划推理和执行复杂任务 (#ml #rl #agent)
 - [[flashattention]] — IO-aware优化将显存从O(n²)降至O(n) (#ml #optimization #gpu)
+- [[feed-forward-network]] — FFN占Transformer约2/3参数，对每个token独立做两层线性变换 (#ml #architecture)
 
 ## Entities
 
