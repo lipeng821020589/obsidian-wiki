@@ -261,35 +261,35 @@ $$\mathbf{A} = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\rig
 ## 📊 图解（来源：《矩阵力量》Book4）
 
 ### Ch17
-![Ch17 page-01.png](../assets/matrix-power/Ch17/page-01.png)
+![Ch17 page-01.png](../../../assets/matrix-power/Ch17/page-01.png)
 
-![Ch17 page-02.png](../assets/matrix-power/Ch17/page-02.png)
+![Ch17 page-02.png](../../../assets/matrix-power/Ch17/page-02.png)
 
-![Ch17 page-03.png](../assets/matrix-power/Ch17/page-03.png)
+![Ch17 page-03.png](../../../assets/matrix-power/Ch17/page-03.png)
 
-![Ch17 page-04.png](../assets/matrix-power/Ch17/page-04.png)
+![Ch17 page-04.png](../../../assets/matrix-power/Ch17/page-04.png)
 
-![Ch17 page-05.png](../assets/matrix-power/Ch17/page-05.png)
+![Ch17 page-05.png](../../../assets/matrix-power/Ch17/page-05.png)
 
 ### Ch19
-![Ch19 page-01.png](../assets/matrix-power/Ch19/page-01.png)
+![Ch19 page-01.png](../../../assets/matrix-power/Ch19/page-01.png)
 
-![Ch19 page-02.png](../assets/matrix-power/Ch19/page-02.png)
+![Ch19 page-02.png](../../../assets/matrix-power/Ch19/page-02.png)
 
-![Ch19 page-03.png](../assets/matrix-power/Ch19/page-03.png)
+![Ch19 page-03.png](../../../assets/matrix-power/Ch19/page-03.png)
 
-![Ch19 page-04.png](../assets/matrix-power/Ch19/page-04.png)
+![Ch19 page-04.png](../../../assets/matrix-power/Ch19/page-04.png)
 
-![Ch19 page-05.png](../assets/matrix-power/Ch19/page-05.png)
+![Ch19 page-05.png](../../../assets/matrix-power/Ch19/page-05.png)
 
 ### Ch25
-![Ch25 page-01.png](../assets/matrix-power/Ch25/page-01.png)
+![Ch25 page-01.png](../../../assets/matrix-power/Ch25/page-01.png)
 
-![Ch25 page-02.png](../assets/matrix-power/Ch25/page-02.png)
+![Ch25 page-02.png](../../../assets/matrix-power/Ch25/page-02.png)
 
-![Ch25 page-03.png](../assets/matrix-power/Ch25/page-03.png)
+![Ch25 page-03.png](../../../assets/matrix-power/Ch25/page-03.png)
 
-![Ch25 page-04.png](../assets/matrix-power/Ch25/page-04.png)
+![Ch25 page-04.png](../../../assets/matrix-power/Ch25/page-04.png)
 
-![Ch25 page-05.png](../assets/matrix-power/Ch25/page-05.png)
+![Ch25 page-05.png](../../../assets/matrix-power/Ch25/page-05.png)
 
