@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-04-19*
+*This index is automatically maintained. Last updated: 2026-05-01*
 
 ## Concepts
 
@@ -27,3 +27,4 @@ title: Wiki Index
 ## Journal
 
 - 2026-04-19: 首次同步 Transformer/Attention 相关知识到 wiki
+- 2026-05-01: 添加深度学习数学 Week1 学习笔记（线性代数基础向量/矩阵/线性变换/行列式/秩/正交）
